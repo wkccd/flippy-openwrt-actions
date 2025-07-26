@@ -346,10 +346,13 @@ query_kernel() {
             TMP_ARR_KERNELS=()
             i=1
             for kernel_var in "${down_kernel_list[@]}"; do
+                echo "打印kernel_var=======$kernel_var"
                 echo -e "${INFO} (${i}) Auto query the latest kernel version of the same series for [ ${vb} - ${kernel_var} ]"
 
                 # Identify the kernel <VERSION> and <PATCHLEVEL>, such as [ 6.1 ]
                 kernel_verpatch="$(echo ${kernel_var} | awk -F '.' '{print $1"."$2}')"
+                echo "打印kernel_verpatch=======$kernel_verpatch"
+                
 
                 # Query the latest kernel version
                 latest_version="$(
@@ -358,6 +361,7 @@ query_kernel() {
                         grep -oE "${kernel_verpatch}\.[0-9]+\.tar\.gz" | sed 's/\.tar\.gz//'
                         sort -urV | head -n 1
                 )"
+                echo "打印latest_version=======$latest_version"
 
                 if [[ "$?" -eq "0" && -n "${latest_version}" ]]; then
                     TMP_ARR_KERNELS[${i}]="${latest_version}"
